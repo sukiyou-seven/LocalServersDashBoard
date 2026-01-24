@@ -1,0 +1,229 @@
+<Page
+    x:Class="LocalServersDashBoard.Views.Pages.PythonAppPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="clr-namespace:LocalServersDashBoard.Helpers"
+    xmlns:local="clr-namespace:LocalServersDashBoard.Views.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+    Title="PythonAppPage"
+    d:DataContext="{d:DesignInstance local:PythonAppPage,
+                                     IsDesignTimeCreatable=False}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    ui:NavigationView.HeaderContent="全部版本"
+    ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+    ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+    mc:Ignorable="d">
+    <StackPanel>
+        <ProgressBar IsIndeterminate="{Binding ViewModel.ProgressBar}" Margin="0,0,0,20" />
+        <ui:TextBlock Text="{Binding ViewModel.CommandText}"></ui:TextBlock>
+        <WrapPanel>
+            <ui:TextBlock Text="Python 安装目录："></ui:TextBlock>
+            <ui:TextBlock Text="{Binding ViewModel.UvInstallPath}"
+                          Margin="10,0,0,0" Width="500"></ui:TextBlock>
+            <ui:Button Content="打开"
+                       Command="{Binding ViewModel.OpenFolderCommand}"
+                       Margin="10,0,0,0"
+                       ></ui:Button>
+            <ui:TextBlock Text="全局版本：" Margin="10,0,0,0"></ui:TextBlock>
+            <ui:TextBlock Text="{Binding ViewModel.DefaultPythonVersion}"
+                          Margin="10,0,0,0" ></ui:TextBlock>
+            
+        </WrapPanel>
+        <ui:Card>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <!-- <ui:Button Content="安装UV" -->
+                    <!--            Command="{Binding ViewModel.AddPythonUvCommand}"> -->
+                    <!-- </ui:Button> -->
+
+
+                    <ui:Button Content="刷新python版本列表" Margin="10,0,0,0"
+                               Command="{Binding ViewModel.RefreshPythonListCommand}">
+                    </ui:Button>
+                </StackPanel>
+
+                <StackPanel>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto" Height="400">
+
+                        <ui:DataGrid Margin="0,20,0,0"
+                                     ItemsSource="{Binding ViewModel.PythonList}"
+                                     IsReadOnly="True" AutoGenerateColumns="False"
+                                     VirtualizingPanel.IsVirtualizing="True"
+                                     VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ui:DataGrid.Columns>
+
+
+                                <DataGridTemplateColumn Header="可安装版本(下载)">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <ui:Button Content="{Binding Version}"
+                                                           Margin="0,0,0,0"
+                                                           Command="{Binding  DataContext.ViewModel.DownLoadItemCommand
+                                                      ,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}"
+                                                           CommandParameter="{Binding }">
+                                                </ui:Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                                <DataGridTemplateColumn Header="安装">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <ui:Button Content="{Binding Status}"
+                                                           Margin="0,0,0,0"
+                                                           Command="{Binding  DataContext.ViewModel.InstallPythonCommand
+                                                      ,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}"
+                                                           CommandParameter="{Binding Version}"
+                                                           Width="120"
+                                                           >
+                                                </ui:Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+
+                                <!-- <DataGridTemplateColumn Header="设置默认"> -->
+                                <!--     <DataGridTemplateColumn.CellTemplate> -->
+                                <!--         <DataTemplate> -->
+                                <!--             <StackPanel> -->
+                                <!--                 <ui:Button -->
+                                <!--                     Content="设为全局" -->
+                                <!--                     Command="{Binding DataContext.ViewModel.SetDefaultVersionCommand, RelativeSource={RelativeSource AncestorType=ui:DataGrid}}" -->
+                                <!--                     CommandParameter="{Binding Version}" -->
+                                <!--                     ></ui:Button> -->
+                                <!--             </StackPanel> -->
+                                <!--         </DataTemplate> -->
+                                <!--     </DataGridTemplateColumn.CellTemplate> -->
+                                <!-- </DataGridTemplateColumn> -->
+
+
+                            </ui:DataGrid.Columns>
+                        </ui:DataGrid>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+
+
+            <!-- <StackPanel> -->
+            <!-- -->
+            <!--     <StackPanel Orientation="Horizontal"  Margin="0,0,0,20"> -->
+            <!-- -->
+            <!--         <ui:Button Content="重新加载数据" -->
+            <!--                    Command="{Binding ViewModel.GetPageDataCommand}" -->
+            <!--                    Margin="0,0,10,0"> -->
+            <!--         </ui:Button> -->
+            <!-- -->
+            <!-- -->
+            <!--         <ui:Button Content="更新版本数据" -->
+            <!--                    Command="{Binding ViewModel.RefreshPythonVersionCommand}" -->
+            <!--                    Margin="10,0,10,0"> -->
+            <!--         </ui:Button> -->
+            <!--     </StackPanel> -->
+            <!-- -->
+            <!-- -->
+            <!-- -->
+            <!--     <Grid> -->
+            <!--         <Grid.ColumnDefinitions> -->
+            <!--             <ColumnDefinition Width="200"></ColumnDefinition> -->
+            <!--             <ColumnDefinition Width="*"></ColumnDefinition> -->
+            <!--         </Grid.ColumnDefinitions> -->
+            <!-- -->
+            <!--         <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Auto"  -->
+            <!--                       VerticalScrollBarVisibility="Auto" Height="400"> -->
+            <!--             <StackPanel > -->
+            <!--                 <ItemsControl ItemsSource="{Binding ViewModel.PythonVersion.VersionList}"> -->
+            <!--                     <ItemsControl.ItemTemplate> -->
+            <!--                         <DataTemplate> -->
+            <!--                          -->
+            <!--                             <ui:CardAction  -->
+            <!--                                 Command="{Binding DataContext.ViewModel.SelectItemCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}" -->
+            <!--                                 CommandParameter="{Binding}" -->
+            <!--                             > -->
+            <!--                                 <ui:CardAction.Content> -->
+            <!--                                     <ui:TextBlock Text="{Binding }"></ui:TextBlock> -->
+            <!--                                 </ui:CardAction.Content> -->
+            <!--                             </ui:CardAction> -->
+            <!--                         </DataTemplate> -->
+            <!--                     </ItemsControl.ItemTemplate> -->
+            <!--                 </ItemsControl> -->
+            <!--             </StackPanel> -->
+            <!--         </ScrollViewer> -->
+            <!--          -->
+            <!--          -->
+            <!-- -->
+            <!--         <StackPanel Grid.Column="1" > -->
+            <!--             <StackPanel Margin="10,0,0,0" Orientation="Horizontal"> -->
+            <!--                 <ui:TextBlock Text="当前选择版本:"></ui:TextBlock> -->
+            <!--                 <ui:TextBlock Margin="10,0,0,0"  -->
+            <!--                               Text="{Binding ViewModel.PythonVersionChecked}"></ui:TextBlock> -->
+            <!--             </StackPanel> -->
+            <!--             <ui:DataGrid  Margin="0,20,0,0" -->
+            <!--                           ItemsSource="{Binding ViewModel.SelectItemData}" -->
+            <!--                           IsReadOnly="True" AutoGenerateColumns="False" -->
+            <!--                           VirtualizingPanel.IsVirtualizing="True" -->
+            <!--                           VirtualizingPanel.VirtualizationMode="Recycling"> -->
+            <!--                 <ui:DataGrid.Columns> -->
+            <!-- -->
+            <!-- -->
+            <!--                     <DataGridTemplateColumn Header="可安装版本(下载)"> -->
+            <!--                         <DataGridTemplateColumn.CellTemplate> -->
+            <!--                             <DataTemplate> -->
+            <!--                                 <StackPanel> -->
+            <!--                                     <ui:Button Content="{Binding Text}" -->
+            <!--                                                Margin="0,0,0,0" -->
+            <!--                                                Command="{Binding  DataContext.ViewModel.DownLoadItemCommand -->
+            <!--                                           ,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}" -->
+            <!--                                                CommandParameter="{Binding }"> -->
+            <!--                                     </ui:Button> -->
+            <!--                                 </StackPanel> -->
+            <!--                             </DataTemplate> -->
+            <!--                         </DataGridTemplateColumn.CellTemplate> -->
+            <!--                     </DataGridTemplateColumn> -->
+            <!--                      -->
+            <!--                     <DataGridTemplateColumn Header="安装"> -->
+            <!--                         <DataGridTemplateColumn.CellTemplate> -->
+            <!--                             <DataTemplate> -->
+            <!--                                 <StackPanel> -->
+            <!--                                     <ui:Button Content="{Binding Text}" -->
+            <!--                                                Margin="0,0,0,0" -->
+            <!--                                                Command="{Binding  DataContext.ViewModel.InstallPythonExeCommand -->
+            <!--                                           ,RelativeSource={RelativeSource AncestorType=ui:DataGrid}}" -->
+            <!--                                                CommandParameter="{Binding Href}"> -->
+            <!--                                     </ui:Button> -->
+            <!--                                 </StackPanel> -->
+            <!--                             </DataTemplate> -->
+            <!--                         </DataGridTemplateColumn.CellTemplate> -->
+            <!--                     </DataGridTemplateColumn> -->
+            <!--                      -->
+            <!--                      -->
+            <!--                     <DataGridTemplateColumn Header=" "> -->
+            <!--                         <DataGridTemplateColumn.CellTemplate> -->
+            <!--                             <DataTemplate> -->
+            <!--                                 <StackPanel> -->
+            <!--                                     <ui:TextBlock Text="{Binding DownLoadPercent}"></ui:TextBlock> -->
+            <!--                                 </StackPanel> -->
+            <!--                             </DataTemplate> -->
+            <!--                         </DataGridTemplateColumn.CellTemplate> -->
+            <!--                     </DataGridTemplateColumn> -->
+            <!-- -->
+            <!-- -->
+            <!--                 </ui:DataGrid.Columns> -->
+            <!--             </ui:DataGrid> -->
+            <!--         </StackPanel> -->
+            <!--     </Grid> -->
+            <!-- -->
+            <!-- -->
+            <!-- </StackPanel> -->
+
+        </ui:Card>
+    </StackPanel>
+</Page>
